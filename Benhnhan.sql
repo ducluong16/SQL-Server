@@ -1,0 +1,25 @@
+CREATE TABLE BENHNHAN (
+    maBN VARCHAR(10) PRIMARY KEY,
+    hotenBN NVARCHAR(100),
+    ngaysinh DATE,
+    gioitinh NVARCHAR(10),
+    sdt NVARCHAR(20)
+);
+
+CREATE TABLE BACSI (
+    maBS VARCHAR(10) PRIMARY KEY,
+    hotenBS NVARCHAR(100),
+    ngaysinh DATE,
+    chuyenkhoa NVARCHAR(50),
+    sdt NVARCHAR(20)
+);
+
+CREATE TABLE KHAMBENH (
+    maKB VARCHAR(10) PRIMARY KEY,
+    maBN VARCHAR(10),
+    maBS VARCHAR(10),
+    ngaykham DATE,
+    benh NVARCHAR(100),
+    FOREIGN KEY (maBN) REFERENCES BENHNHAN(maBN),
+    FOREIGN KEY (maBS) REFERENCES BACSI(maBS)
+);
