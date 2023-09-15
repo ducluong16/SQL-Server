@@ -3,7 +3,7 @@ SELECT bn.hotenBN, bs.hotenBS, kb.ngaykham
 FROM KHAMBENH kb
 JOIN BENHNHAN bn ON kb.maBN = bn.maBN
 JOIN BACSI bs ON kb.maBS = bs.maBS
-WHERE bs.chuyenkhoa = 'Nhi khoa' AND kb.benh = 'Sốt cao';
+WHERE bs.chuyenkhoa = N'Nhi khoa' AND kb.benh = N'Sốt cao';
 -- Lấy thông tin tên bệnh nhân, tên bác sĩ và ngày khám của các phiếu khám bệnh được thực hiện bởi bác sĩ có chuyên khoa "Nhi khoa" hoặc "Ngoại khoa":
 SELECT bn.hotenBN, bs.hotenBS, kb.ngaykham
 FROM KHAMBENH kb
@@ -64,12 +64,12 @@ SELECT bn.hotenBN, bs.hotenBS, kb.ngaykham
 FROM KHAMBENH kb
 JOIN BENHNHAN bn ON kb.maBN = bn.maBN
 JOIN BACSI bs ON kb.maBS = bs.maBS
-WHERE bs.maBS = 'BS002' AND kb.benh = 'Ho';
+WHERE bs.maBS = 'BS002' AND kb.benh = N'Ho';
 -- Lấy thông tin tên bệnh nhân và số lượng phiếu khám bệnh của các bệnh nhân có số lượng phiếu khám bệnh ít hơn 3 và có bệnh là "Đau đầu":
 SELECT bn.hotenBN, COUNT(kb.maKB) AS soluongKB
 FROM BENHNHAN bn
 JOIN KHAMBENH kb ON bn.maBN = kb.maBN
-WHERE kb.benh = 'Đau đầu'
+WHERE kb.benh = N'Đau đầu'
 GROUP BY bn.maBN
 HAVING COUNT(kb.maKB) < 3;
 -- Lấy thông tin tên bệnh nhân và số lượng phiếu khám bệnh của các bệnh nhân có số lượng phiếu khám bệnh lớn hơn 5:
@@ -79,3 +79,45 @@ FROM BENHNHAN bn
 JOIN KHAMBENH kb ON bn.maBN = kb.maBN
 GROUP BY bn.maBN
 HAVING COUNT(kb.maKB) > 5;
+
+
+
+-- Dưới đây là 10 câu truy vấn đơn giản từ các bảng BENHNHAN, BACSI và KHAMBENH:
+
+-- Lấy thông tin tất cả các bệnh nhân:
+
+
+SELECT * FROM BENHNHAN;
+
+-- Lấy thông tin tất cả các bác sĩ:
+
+SELECT * FROM BACSI;
+
+-- Lấy thông tin tất cả các phiếu khám bệnh:
+
+SELECT * FROM KHAMBENH;
+
+-- Lấy thông tin tên bệnh nhân và tuổi của tất cả các bệnh nhân:
+
+SELECT hotenBN, YEAR(CURRENT_DATE) - YEAR(ngaysinh) AS tuoi FROM BENHNHAN;
+
+-- Lấy thông tin tên bác sĩ và chuyên khoa của tất cả các bác sĩ:
+SELECT hotenBS, chuyenkhoa FROM BACSI;
+
+-- Lấy thông tin tên bệnh nhân và bệnh của tất cả các phiếu khám bệnh:
+
+SELECT bn.hotenBN, kb.benh FROM KHAMBENH kb JOIN BENHNHAN bn ON kb.maBN = bn.maBN;
+
+-- Lấy thông tin tên bệnh nhân và ngày khám của tất cả các phiếu khám bệnh được thực hiện bởi bác sĩ có mã bác sĩ là 'BS001':
+
+SELECT bn.hotenBN, kb.ngaykham FROM KHAMBENH kb JOIN BENHNHAN bn ON kb.maBN = bn.maBN WHERE kb.maBS = 'BS001';
+
+-- Lấy thông tin tên bệnh nhân và tên bác sĩ của tất cả các phiếu khám bệnh được thực hiện trong năm hiện tại:
+
+SELECT bn.hotenBN, bs.hotenBS FROM KHAMBENH kb JOIN BENHNHAN bn ON kb.maBN = bn.maBN JOIN BACSI bs ON kb.maBS = bs.maBS WHERE EXTRACT(YEAR FROM kb.ngaykham) = EXTRACT(YEAR FROM CURRENT_DATE);
+
+-- Lấy thông tin tên bệnh nhân và ngày khám của tất cả các phiếu khám bệnh được thực hiện trong tháng hiện tại:
+SELECT bn.hotenBN, kb.ngaykham FROM KHAMBENH kb JOIN BENHNHAN bn ON kb.maBN = bn.maBN WHERE EXTRACT(MONTH FROM kb.ngaykham) = EXTRACT(MONTH FROM CURRENT_DATE);
+
+-- Lấy thông tin tên bệnh nhân, tên bác sĩ và ngày khám của tất cả các phiếu khám bệnh được thực hiện bởi bác sĩ có chuyên khoa "Nhi khoa":
+SELECT bn.hotenBN, bs.hotenBS, kb.ngaykham FROM KHAMBENH kb JOIN BENHNHAN bn ON kb.maBN = bn.maBN JOIN BACSI bs ON kb.maBS = bs.maBS WHERE bs.chuyenkhoa = 'Nhi khoa';
